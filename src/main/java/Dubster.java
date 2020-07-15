@@ -25,7 +25,60 @@ Return the words of the initial song that Polycarpus used to make a dubsteb remi
 */
 
 public class Dubster {
+    public static void main(String[] args) {
+        System.out.println(songDecoder("WUBWUBIWUBAMWUBWUBX"));
+        System.out.println(songDecoder("WUBWUBABCWUB"));
+        System.out.println(songDecoder("RWUBWUBWUBLWUB"));
+        System.out.println(songDecoder("WUBWUBWUB"));
+    }
+
     public static String songDecoder(String song) {
-        return null;
+        String str = "WUB";
+        int length = song.length();
+        int beginIndex1 = 0;
+        int beginIndex2 = 0;
+        int beginWord = 0;
+        int endWord = 0;
+        boolean flag = false;
+        String[] songW = new String[length];
+        int currentLength = 0;
+        int counter = 0;
+
+        for (int i = 0; i < length; i++) {
+            if (song.regionMatches(beginIndex1, str, beginIndex2, str.length())) {
+                if (flag == true) {
+                    endWord = beginIndex1;
+                    songW[currentLength] = song.substring(beginWord, endWord);
+                    currentLength++;
+                    flag = false;
+                    counter = 0;
+                }
+                beginIndex1 = beginIndex1 + 3;
+            } else {
+                if (counter == 0) {
+                    beginWord = beginIndex1;
+                }
+                beginIndex1++;
+                counter++;
+
+                if (beginIndex1 == length) {
+                    songW[currentLength] = song.substring(beginWord, beginIndex1);
+                    currentLength++;
+                }
+                flag = true;
+            }
+        }
+        StringBuilder songNew = new StringBuilder();
+        for (int i = 0; i < songW.length; i++) {
+            if ((songW[i] != null)) {
+                if (songNew.length() == 0) {
+                    songNew.append(songW[i]);
+                } else {
+                    songNew.append(' ').append(songW[i]);
+                }
+            }
+        }
+        String result = songNew.toString();
+        return result;
     }
 }
